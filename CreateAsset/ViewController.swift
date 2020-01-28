@@ -17,6 +17,7 @@ class ViewController: UIViewController{
     @IBAction func show(_ sender: UIButton) {
         let viewController = UIImagePickerController()
         viewController.delegate = self
+        viewController.sourceType = .camera
         self.present(viewController, animated: true, completion: nil)
     }
 }
