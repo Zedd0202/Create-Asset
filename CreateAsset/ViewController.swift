@@ -30,14 +30,28 @@ extension ViewController: UIImagePickerControllerDelegate, UINavigationControlle
         if let image = info[.originalImage] as? UIImage {
             UIImageWriteToSavedPhotosAlbum(image, self, #selector(savedImage), nil)
         }
+        
+        if let url = info[.mediaURL] as? URL, UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(url.path) {
+            UISaveVideoAtPathToSavedPhotosAlbum(url.path, self, #selector(savedVideo), nil)
+        }
+        picker.dismiss(animated: true, completion: nil)
     }
     
     @objc
-    func savedImage(image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeMutableRawPointer?) {
+    func savedImage(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeMutableRawPointer?) {
         if let error = error {
             print(error)
             return
         }
         print("success")
+    }
+    
+    @objc
+    func savedVideo(_ videoPath: String, didFinishSavingWithError error: Error?, contextInfo: UnsafeMutableRawPointer?) {
+      if let error = error {
+          print(error)
+          return
+      }
+      print("success")
     }
 }
