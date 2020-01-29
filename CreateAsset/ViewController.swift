@@ -18,6 +18,7 @@ class ViewController: UIViewController{
         let viewController = UIImagePickerController()
         viewController.delegate = self
         viewController.sourceType = .camera
+        viewController.mediaTypes = UIImagePickerController.availableMediaTypes(for: .camera) ?? []
         self.present(viewController, animated: true, completion: nil)
     }
 }
@@ -25,6 +26,18 @@ class ViewController: UIViewController{
 extension ViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        print(info)
+        // 이미지 저장.
+        if let image = info[.originalImage] as? UIImage {
+            UIImageWriteToSavedPhotosAlbum(image, self, #selector(savedImage), nil)
+        }
+    }
+    
+    @objc
+    func savedImage(image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeMutableRawPointer?) {
+        if let error = error {
+            print(error)
+            return
+        }
+        print("success")
     }
 }
