@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Photos
 
 class ViewController: UIViewController{
 
@@ -25,6 +26,7 @@ class ViewController: UIViewController{
 
 extension ViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+/*
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         // 이미지 저장.
         if let image = info[.originalImage] as? UIImage {
@@ -48,10 +50,25 @@ extension ViewController: UIImagePickerControllerDelegate, UINavigationControlle
     
     @objc
     func savedVideo(_ videoPath: String, didFinishSavingWithError error: Error?, contextInfo: UnsafeMutableRawPointer?) {
-      if let error = error {
-          print(error)
-          return
-      }
-      print("success")
+        if let error = error {
+            print(error)
+            return
+        }
+        print("success")
+    }
+*/
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        // 이미지 저장.
+        if let image = info[.originalImage] as? UIImage {
+            PHPhotoLibrary.shared().performChanges({
+                PHAssetChangeRequest.creationRequestForAsset(from: image)
+            }, completionHandler: { (success, error) in
+                if success {
+                    print("success")
+                } else if let error = error {
+                    print(error)
+                }
+            })
+        }
     }
 }
