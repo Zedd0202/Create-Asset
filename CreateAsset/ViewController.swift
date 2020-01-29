@@ -70,5 +70,17 @@ extension ViewController: UIImagePickerControllerDelegate, UINavigationControlle
                 }
             })
         }
+        if let url = info[.mediaURL] as? URL, UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(url.path) {
+            PHPhotoLibrary.shared().performChanges({
+                PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: url)
+            }, completionHandler: { (success, error) in
+                if success {
+                    print("success")
+                } else if let error = error {
+                    print(error)
+                }
+            })
+        }
+        picker.dismiss(animated: true, completion: nil)
     }
 }
